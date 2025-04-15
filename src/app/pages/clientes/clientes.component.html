@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body>
+<div class="card">
+  <input class="search-box" [(ngModel)]="search" (input)="page=1" placeholder="Buscar clientes...">
+
+  <div class="table-responsive">
+    <table>
+      <thead>
+      <tr>
+        <th *ngFor="let col of displayedColumns">{{ col | titlecase }}</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let cliente of filteredClientes">
+        <td>{{ cliente.nombre_cliente }}</td>
+        <td>{{ cliente.fecha_nac_cliente }}</td>
+        <td>{{ cliente.email_cliente }}</td>
+        <td>{{ cliente.tlf_cliente }}</td>
+      </tr>
+      <tr *ngIf="filteredClientes.length === 0">
+        <td colspan="4" class="text-center">No hay resultados</td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="paginator" *ngIf="totalPages > 1">
+    <button (click)="setPage(page-1)" [disabled]="page === 1">&lt;</button>
+    <span>Página {{ page }} de {{ totalPages }}</span>
+    <button (click)="setPage(page+1)" [disabled]="page === totalPages">&gt;</button>
+  </div>
+</div>
+
+</body>
+</html>

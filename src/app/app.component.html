@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Navegación Principal</title>
+  <link rel="stylesheet" href="app.component.css">
+</head>
+<body>
+<nav class="navbar">
+  <div class="navbar-container">
+    <span class="navbar-brand">Interfáz de Navegación Principal</span>
+    <input type="checkbox" id="menu-toggle" class="menu-toggle">
+    <label for="menu-toggle" class="menu-icon">&#9776;</label>
+    <div class="navbar-links">
+      <a routerLink="/pedidos" routerLinkActive="active" class="nav-btn">Pedidos</a>
+      <a routerLink="/clientes" routerLinkActive="active" class="nav-btn">Clientes</a>
+      <a routerLink="/productos" routerLinkActive="active" class="nav-btn">Productos</a>
+    </div>
+  </div>
+</nav>
+<main class="main-content">
+  <router-outlet></router-outlet>
+</main>
+
+</body>
+</html>

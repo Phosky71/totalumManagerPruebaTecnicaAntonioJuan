@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body>
+<div class="card">
+  <input class="search-box" [(ngModel)]="search" (input)="page=1" placeholder="Buscar pedidos...">
+
+  <div class="table-responsive">
+    <table>
+      <thead>
+      <tr>
+        <th *ngFor="let col of displayedColumns">{{ col | titlecase }}</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let pedido of filteredPedidos">
+        <td>{{ pedido.num_pedido }}</td>
+        <td>{{ pedido.importe_pedido | currency:'EUR':'symbol':'1.2-2' }}</td>
+        <td>{{ pedido.impuestos_pedido | currency:'EUR':'symbol':'1.2-2' }}</td>
+        <td>{{ pedido.cantidad_productos }}</td>
+        <td>{{ pedido.fecha_pedido }}</td>
+        <td>{{ pedido.cliente_pedido }}</td>
+      </tr>
+      <tr *ngIf="filteredPedidos.length === 0">
+        <td colspan="6" class="text-center">No hay resultados</td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="paginator" *ngIf="totalPages > 1">
+    <button (click)="setPage(page-1)" [disabled]="page === 1">&lt;</button>
+    <span>Página {{ page }} de {{ totalPages }}</span>
+    <button (click)="setPage(page+1)" [disabled]="page === totalPages">&gt;</button>
+  </div>
+</div>
+
+</body>
+</html>

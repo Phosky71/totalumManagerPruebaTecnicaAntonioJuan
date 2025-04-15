@@ -1,0 +1,110 @@
+/* Estilo general para las tarjetas */
+.card {
+  background: #ffffff;
+  border-radius: 1rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  padding: 2rem;
+  margin-bottom: 2rem;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+}
+
+/* Tabla responsiva */
+.table-responsive {
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 1rem;
+  background: #ffffff;
+}
+
+th, td {
+  padding: 1rem;
+  text-align: left;
+  border-bottom: 1px solid #eaeaea;
+}
+
+th {
+  background-color: #f8f9fa;
+  font-weight: bold;
+}
+
+tr:last-child td {
+  border-bottom: none;
+}
+
+/* Caja de búsqueda */
+.search-box {
+  width: 100%;
+  max-width: 400px;
+  margin-bottom: 1.5rem;
+  padding: 0.8rem 1rem;
+  border: 1px solid #dcdcdc;
+  border-radius: 0.5rem;
+  font-size: 1rem;
+}
+
+/* Paginador */
+.paginator {
+  display: flex;
+  justify-content: center; /* Centramos los botones */
+  align-items: center;
+  gap: 1rem; /* Espaciado entre botones */
+}
+
+.paginator button {
+  background-color: #007bff; /* Azul moderno */
+  color: #ffffff;
+  border: none;
+  border-radius: 0.5rem;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.paginator button:hover:not(:disabled) {
+  background-color: #0056b3; /* Azul más oscuro al pasar el ratón */
+}
+
+.paginator button:disabled {
+  background-color: #eaeaea; /* Gris claro para botones deshabilitados */
+  cursor: not-allowed;
+}
+
+/* Estilo responsivo para pantallas pequeñas */
+@media (max-width: 768px) {
+
+  .card {
+    padding: 1rem; /* Reducimos el padding en dispositivos pequeños */
+    margin-bottom: 1.5rem;
+    font-size: 0.9rem; /* Ajustamos el tamaño de fuente */
+  }
+
+  th, td {
+    padding: 0.5rem; /* Reducimos el espacio en tablas */
+    font-size: 0.85rem;
+    word-wrap: break-word; /* Evitamos desbordamiento de texto */
+  }
+
+  .search-box {
+    max-width: none; /* Ocupa todo el ancho disponible */
+    font-size: 0.9rem;
+    padding: 0.7rem;
+    margin-bottom: 1rem;
+    border-radius: 0.4rem;
+  }
+
+  .paginator button {
+    padding: 0.4rem 0.8rem; /* Botones más compactos */
+    font-size: 0.9rem;
+    border-radius: 0.4rem;
+  }
+}

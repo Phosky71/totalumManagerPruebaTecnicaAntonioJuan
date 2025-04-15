@@ -1,0 +1,77 @@
+/*.card {*/
+/*  background: #fff;*/
+/*  border-radius: 1rem;*/
+/*  box-shadow: 0 2px 8px rgba(0,0,0,0.07);*/
+/*  padding: 1.5rem;*/
+/*  margin-bottom: 2rem;*/
+/*}*/
+
+/*.table-responsive {*/
+/*  overflow-x: auto;*/
+/*}*/
+
+/*table {*/
+/*  width: 100%;*/
+/*  border-collapse: collapse;*/
+/*  margin-bottom: 1rem;*/
+/*  background: #fff;*/
+/*}*/
+
+/*th, td {*/
+/*  padding: 0.75rem 0.5rem;*/
+/*  text-align: left;*/
+/*  border-bottom: 1px solid #e0e0e0;*/
+/*}*/
+
+/*th {*/
+/*  background: #f5f5f5;*/
+/*  font-weight: 600;*/
+/*}*/
+
+/*tr:last-child td {*/
+/*  border-bottom: none;*/
+/*}*/
+
+/*@media (max-width: 600px) {*/
+/*  th, td {*/
+/*    padding: 0.5rem 0.2rem;*/
+/*    font-size: 0.95rem;*/
+/*  }*/
+/*  .card {*/
+/*    padding: 0.7rem;*/
+/*  }*/
+/*}*/
+
+/*!* Search and Paginator *!*/
+/*.search-box {*/
+/*  width: 100%;*/
+/*  max-width: 350px;*/
+/*  margin-bottom: 1rem;*/
+/*  padding: 0.5rem 0.7rem;*/
+/*  border: 1px solid #bdbdbd;*/
+/*  border-radius: 0.5rem;*/
+/*  font-size: 1rem;*/
+/*}*/
+
+/*.paginator {*/
+/*  display: flex;*/
+/*  justify-content: flex-end;*/
+/*  align-items: center;*/
+/*  gap: 0.5rem;*/
+/*  font-size: 1rem;*/
+/*}*/
+
+/*.paginator button {*/
+/*  background: #1976d2;*/
+/*  color: #fff;*/
+/*  border: none;*/
+/*  border-radius: 0.3rem;*/
+/*  padding: 0.3rem 0.7rem;*/
+/*  cursor: pointer;*/
+/*  transition: background 0.2s;*/
+/*}*/
+
+/*.paginator button:disabled {*/
+/*  background: #bdbdbd;*/
+/*  cursor: not-allowed;*/
+/*}*/

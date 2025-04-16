@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { getPedidos, Pedido } from '../../../totalum/service.pedidos';
-
 import { CurrencyPipe, NgForOf, NgIf, TitleCasePipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
@@ -23,9 +22,33 @@ export class PedidosComponent implements OnInit {
   search = '';
   page = 1;
   pageSize = 3;
+  totalItems = 0;
 
   async ngOnInit() {
-    this.pedidos = await getPedidos() || [];
+    await this.loadPedidos();
+  }
+
+  async loadPedidos() {
+    // Actualiza la variable global antes de hacer la llamada
+    window.currentPedidoPage = this.page - 1;
+    const response = await getPedidos();
+
+    // Verificar si response existe
+    if (response) {
+      if (response.data && Array.isArray(response.data.data)) {
+        this.pedidos = response.data.data;
+        this.totalItems = response.total || 0;
+      } else {
+        this.pedidos = [];
+        this.totalItems = 0;
+      }
+    } else {
+      this.pedidos = [];
+      this.totalItems = 0;
+    }
+
+    console.log('Pedidos cargados:', this.pedidos);
+    console.log('Total de pedidos:', this.totalItems);
   }
 
   get filteredPedidos() {
@@ -38,23 +61,23 @@ export class PedidosComponent implements OnInit {
         )
       );
     }
-    const start = (this.page - 1) * this.pageSize;
-    return filtered.slice(start, start + this.pageSize);
+    return filtered;
+  }
+
+  get allPedidos() {
+    return this.pedidos;
   }
 
   get totalPages() {
-    const searchLower = this.search.trim().toLowerCase();
-    const filtered = searchLower
-      ? this.pedidos.filter(p =>
-        Object.values(p).some(val =>
-          String(val).toLowerCase().includes(searchLower)
-        )
-      )
-      : this.pedidos;
-    return Math.ceil(filtered.length / this.pageSize);
+    return Math.ceil(this.totalItems / this.pageSize);
   }
 
-  setPage(newPage: number) {
-    this.page = newPage;
+  async setPage(newPage: number) {
+    if (newPage >= 1 && newPage <= this.totalPages) {
+      this.page = newPage;
+      window.currentPedidoPage = newPage - 1;
+      await this.loadPedidos();
+    }
   }
 }
+

@@ -24,16 +24,30 @@ export interface PedidoFilter {
 // Obtener todos los pedidos
 export async function getPedidos() {
   try {
+    const currentPage = window.currentPedidoPage || 0;
     const response = await totalumSdk.crud.getItems('pedido', {
       sort: {createdAt: 1},
-      pagination: {page: 0, limit: 5}
+      pagination: {page: currentPage, limit: 5}
     });
-    console.log(response.data);
-    return response.data;
+
+    const numPedidos = await totalumSdk.crud.getItems('pedido', {
+      sort: {createdAt: 1},
+      pagination: {limit: 0}
+    });
+
+    return {
+      data: response.data,
+      total: numPedidos.data.data.length
+    };
   } catch (error) {
     console.error(error);
+    return {
+      data: [],
+      total: 0
+    };
   }
 }
+
 
 // Obtener un pedido por ID
 export async function getPedido(id: string) {

@@ -21,16 +21,32 @@ export interface ClienteFilter {
 // Obtener todos los clientes
 export async function getClientes() {
   try {
+    // Usar la página actual desde una variable global
+    const currentPage = window.currentClientPage || 0;
     const response = await totalumSdk.crud.getItems('cliente', {
       sort: {createdAt: 1},
-      pagination: {page: 0, limit: 5}
+      pagination: {page: currentPage, limit: 5}
     });
     console.log(response.data);
-    return response.data;
+
+    const numClientes = await totalumSdk.crud.getItems('cliente', {sort: {createdAt: 1}, pagination: {limit: 0}});
+
+    console.log("Hola", numClientes.data.data.length);
+
+    return {
+      data: response.data,
+      total: numClientes.data.data.length
+    };
+
   } catch (error) {
     console.error(error);
+    return {
+      data: [],
+      total: 0
+    };
   }
 }
+
 
 // Obtener un cliente por ID
 export async function getCliente(id: string) {

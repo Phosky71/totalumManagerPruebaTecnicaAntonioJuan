@@ -21,17 +21,31 @@ export interface ProductoFilter {
 // Obtener todos los productos
 export async function getProductos() {
   try {
+    const currentPage = window.currentProductPage || 0;
     const response = await totalumSdk.crud.getItems('producto', {
       sort: {createdAt: 1},
-      pagination: {page: 0, limit: 50}
+      pagination: {page: currentPage, limit: 5}
     });
-    console.log('Respuesta getProductos:', response);
-    return response?.data || [];
+
+    const numProductos = await totalumSdk.crud.getItems('producto', {
+      sort: {createdAt: 1},
+      pagination: {limit: 0}
+    });
+
+    return {
+      data: response.data,
+      total: numProductos.data.data.length
+    };
   } catch (error) {
     console.error('Error en getProductos:', error);
-    return [];
+    return {
+      data: [],
+      total: 0
+    };
   }
 }
+
+
 
 // Obtener un producto por ID
 export async function getProducto(id: string) {
@@ -77,7 +91,7 @@ export async function editProducto(id: string, productoData: Partial<Omit<Produc
 export async function getProductosWithFilter(
   filtros: ProductoFilter,
   sortOptions: Record<string, 1 | -1> = {createdAt: 1},
-  paginationOptions: { page: number; limit: number } = {page: 0, limit: 50}
+  paginationOptions: { page: number; limit: number } = {page: 0, limit: 5}
 ): Promise<Producto[] | undefined> {
   try {
     // Construye el array de filtros

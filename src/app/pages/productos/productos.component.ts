@@ -1,6 +1,5 @@
 import {Component, OnInit} from '@angular/core';
 import {getProductos, Producto} from '../../../totalum/service.productos';
-
 import {FormsModule} from '@angular/forms';
 import {CurrencyPipe, NgForOf, NgIf, TitleCasePipe} from '@angular/common';
 
@@ -23,32 +22,35 @@ export class ProductosComponent implements OnInit {
   search = '';
   page = 1;
   pageSize = 3;
+  totalItems = 0;
 
   async ngOnInit() {
+    await this.loadProductos();
+  }
+
+  async loadProductos() {
+    window.currentProductPage = this.page - 1;
     const response = await getProductos();
-    // Verificar si response es un array o un objeto
+
+    // Verificar si response existe
     if (response) {
-      if (Array.isArray(response)) {
-        this.productos = response;
-      } else if (response.data && Array.isArray(response.data)) {
-        // Si response es un objeto con una propiedad data que es un array
-        this.productos = response.data;
-      } else if (typeof response === 'object') {
-        // Si response es un objeto pero no tiene una propiedad data que sea un array
-        // Intentar convertir el objeto en un array
-        this.productos = Object.values(response);
+      if (response.data && Array.isArray(response.data.data)) {
+        this.productos = response.data.data;
+        this.totalItems = response.total || 0;
       } else {
         this.productos = [];
+        this.totalItems = 0;
       }
     } else {
       this.productos = [];
+      this.totalItems = 0;
     }
+
     console.log('Productos cargados:', this.productos);
+    console.log('Total de productos:', this.totalItems);
   }
 
-
   get filteredProductos() {
-    console.log('Filtrando productos:', this.productos.length);
     const searchLower = this.search.trim().toLowerCase();
     let filtered = this.productos;
     if (searchLower) {
@@ -58,8 +60,7 @@ export class ProductosComponent implements OnInit {
         )
       );
     }
-    const start = (this.page - 1) * this.pageSize;
-    return filtered.slice(start, start + this.pageSize);
+    return filtered;
   }
 
   get allProductos() {
@@ -67,20 +68,14 @@ export class ProductosComponent implements OnInit {
   }
 
   get totalPages() {
-    const searchLower = this.search.trim().toLowerCase();
-    const filtered = searchLower
-      ? this.productos.filter(p =>
-        Object.values(p).some(val =>
-          String(val).toLowerCase().includes(searchLower)
-        )
-      )
-      : this.productos;
-    return Math.ceil(filtered.length / this.pageSize);
+    return Math.ceil(this.totalItems / this.pageSize);
   }
 
-  setPage(newPage: number) {
-    this.page = newPage;
+  async setPage(newPage: number) {
+    if (newPage >= 1 && newPage <= this.totalPages) {
+      this.page = newPage;
+      window.currentProductPage = newPage - 1;
+      await this.loadProductos();
+    }
   }
 }
-
-

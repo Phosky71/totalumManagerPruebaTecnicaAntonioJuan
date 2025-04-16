@@ -25,7 +25,7 @@
         <td>{{ pedido.cliente_pedido }}</td>
       </tr>
       <tr *ngIf="filteredPedidos.length === 0">
-        <td colspan="6" class="text-center">No hay resultados</td>
+        <td [attr.colspan]="displayedColumns.length" class="no-results">No hay resultados</td>
       </tr>
       </tbody>
     </table>

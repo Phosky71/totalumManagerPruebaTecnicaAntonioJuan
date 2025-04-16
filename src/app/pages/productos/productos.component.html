@@ -16,14 +16,14 @@
       </tr>
       </thead>
       <tbody>
-      <tr *ngFor="let producto of allProductos">
+      <tr *ngFor="let producto of filteredProductos">
         <td>{{ producto.nombre_producto }}</td>
         <td>{{ producto.precio_producto | currency:'EUR':'symbol':'1.2-2' }}</td>
         <td>{{ producto.categoria_producto }}</td>
         <td>{{ producto.cantidad_producto }}</td>
       </tr>
       <tr *ngIf="filteredProductos.length === 0">
-        <td colspan="4" class="text-center">No hay resultados</td>
+        <td [attr.colspan]="displayedColumns.length" class="no-results">No hay resultados</td>
       </tr>
       </tbody>
     </table>

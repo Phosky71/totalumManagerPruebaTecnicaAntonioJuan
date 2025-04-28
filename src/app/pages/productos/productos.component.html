@@ -21,6 +21,16 @@
         <td>{{ producto.precio_producto | currency:'EUR':'symbol':'1.2-2' }}</td>
         <td>{{ producto.categoria_producto }}</td>
         <td>{{ producto.cantidad_producto }}</td>
+        <td>
+          <div class="acciones-botones">
+            <button class="btn btn-sm btn-outline-primary action-btn" (click)="editarProducto(producto)" title="Editar">
+              <i class="fa fa-pencil"></i>
+            </button>
+            <button class="btn btn-sm btn-outline-danger action-btn" (click)="eliminarProducto(producto)" title="Eliminar">
+              <i class="fa fa-trash"></i>
+            </button>
+          </div>
+        </td>
       </tr>
       <tr *ngIf="filteredProductos.length === 0">
         <td [attr.colspan]="displayedColumns.length" class="no-results">No hay resultados</td>

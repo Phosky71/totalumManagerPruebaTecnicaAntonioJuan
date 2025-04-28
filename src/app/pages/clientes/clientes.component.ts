@@ -1,7 +1,12 @@
 import {Component, OnInit} from '@angular/core';
-import {Cliente, getClientes} from '../../../totalum/service.clientes';
+import {Cliente, deleteCliente, getClientes} from '../../../totalum/service.clientes';
 import {FormsModule} from '@angular/forms';
 import {NgForOf, NgIf, TitleCasePipe} from '@angular/common';
+import {deletePedido, Pedido} from '../../../totalum/service.pedidos';
+import {ConfirmDialogComponent} from '../../components/shared/confirm-dialog/confirm-dialog.component';
+import {MatDialog, MatDialogModule} from '@angular/material/dialog';
+import {firstValueFrom} from 'rxjs';
+
 
 
 @Component({
@@ -12,7 +17,8 @@ import {NgForOf, NgIf, TitleCasePipe} from '@angular/common';
     FormsModule,
     TitleCasePipe,
     NgForOf,
-    NgIf
+    NgIf,
+    MatDialogModule
   ],
   styleUrls: ['./clientes.component.css']
 })
@@ -23,6 +29,8 @@ export class ClientesComponent implements OnInit {
   page = 1;
   pageSize = 3;
   totalItems = 0;
+
+  constructor(private dialog: MatDialog) {}
 
   async ngOnInit() {
     await this.loadClientes();
@@ -88,9 +96,31 @@ export class ClientesComponent implements OnInit {
     return filtered;
   }
 
-  get allClientes() {
-    return this.clientes;
+  async eliminarCliente(cliente: Cliente) {
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      width: '400px',
+      data: {
+        title: 'Eliminar pedido',
+        message: `¿Estás seguro de que deseas eliminar el cliente ${cliente.nombre_cliente}?`
+      }
+    });
+
+    try {
+      const result = await firstValueFrom(dialogRef.afterClosed());
+      if (result) {
+        if (cliente._id) {
+          await deleteCliente(cliente._id);
+          await this.loadClientes();
+        }
+      }
+    } catch (error) {
+      console.error('Error al eliminar el cliente:', error);
+    }
   }
+
+  async editarCliente(cliente: Cliente) {
+  }
+
 
   get totalPages() {
     return Math.ceil(this.totalItems / this.pageSize);

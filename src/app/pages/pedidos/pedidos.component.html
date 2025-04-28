@@ -24,12 +24,14 @@
         <td>{{ pedido.fecha_pedido }}</td>
         <td>{{ pedido.cliente_pedido }}</td>
         <td>
-          <button class="btn btn-sm btn-primary me-1" (click)="editarPedido(pedido)">
-            <i class="fa fa-pencil"></i>
-          </button>
-          <button class="btn btn-sm btn-danger" (click)="eliminarPedido(pedido)">
-            <i class="fa fa-trash"></i>
-          </button>
+          <div class="acciones-botones">
+            <button class="btn btn-sm btn-outline-primary action-btn" (click)="editarPedido(pedido)" title="Editar">
+              <i class="fa fa-pencil"></i>
+            </button>
+            <button class="btn btn-sm btn-outline-danger action-btn" (click)="eliminarPedido(pedido)" title="Eliminar">
+              <i class="fa fa-trash"></i>
+            </button>
+          </div>
         </td>
       </tr>
       <tr *ngIf="filteredPedidos.length === 0">
@@ -46,5 +48,4 @@
   </div>
 </div>
 </body>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </html>

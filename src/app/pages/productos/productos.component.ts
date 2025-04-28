@@ -2,6 +2,10 @@ import {Component, OnInit} from '@angular/core';
 import {getProductos, Producto} from '../../../totalum/service.productos';
 import {FormsModule} from '@angular/forms';
 import {CurrencyPipe, NgForOf, NgIf, TitleCasePipe} from '@angular/common';
+import {Cliente, deleteCliente} from '../../../totalum/service.clientes';
+import {ConfirmDialogComponent} from '../../components/shared/confirm-dialog/confirm-dialog.component';
+import {MatDialog, MatDialogModule} from '@angular/material/dialog';
+import {firstValueFrom} from 'rxjs';
 
 @Component({
   selector: 'app-productos',
@@ -11,7 +15,8 @@ import {CurrencyPipe, NgForOf, NgIf, TitleCasePipe} from '@angular/common';
     NgForOf,
     TitleCasePipe,
     NgIf,
-    CurrencyPipe
+    CurrencyPipe,
+    MatDialogModule
   ],
   templateUrl: './productos.component.html',
   styleUrls: ['./productos.component.css']
@@ -23,6 +28,8 @@ export class ProductosComponent implements OnInit {
   page = 1;
   pageSize = 3;
   totalItems = 0;
+
+  constructor(private dialog: MatDialog) {}
 
   async ngOnInit() {
     await this.loadProductos();
@@ -63,8 +70,29 @@ export class ProductosComponent implements OnInit {
     return filtered;
   }
 
-  get allProductos() {
-    return this.productos;
+  async eliminarProducto(producto: Producto) {
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      width: '400px',
+      data: {
+        title: 'Eliminar producto',
+        message: `¿Estás seguro de que deseas eliminar el producto ${producto.nombre_producto}?`
+      }
+    });
+
+    try {
+      const result = await firstValueFrom(dialogRef.afterClosed());
+      if (result) {
+        if (producto._id) {
+          await deleteCliente(producto._id);
+          await this.loadProductos();
+        }
+      }
+    } catch (error) {
+      console.error('Error al eliminar el cliente:', error);
+    }
+  }
+
+  async editarProducto(producto: Producto) {
   }
 
   get totalPages() {

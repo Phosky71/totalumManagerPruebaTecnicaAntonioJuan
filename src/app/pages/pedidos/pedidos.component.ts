@@ -1,7 +1,10 @@
-import { Component, OnInit } from '@angular/core';
-import { getPedidos, Pedido } from '../../../totalum/service.pedidos';
-import { CurrencyPipe, NgForOf, NgIf, TitleCasePipe } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import {Component, OnInit} from '@angular/core';
+import {deletePedido, editPedido, getPedidos, Pedido} from '../../../totalum/service.pedidos';
+import {CurrencyPipe, NgForOf, NgIf, TitleCasePipe} from '@angular/common';
+import {FormsModule} from '@angular/forms';
+import {ConfirmDialogComponent} from '../../components/shared/confirm-dialog/confirm-dialog.component';
+import {MatDialog, MatDialogModule} from '@angular/material/dialog';
+import {firstValueFrom} from 'rxjs';
 
 @Component({
   selector: 'app-pedidos',
@@ -11,18 +14,23 @@ import { FormsModule } from '@angular/forms';
     TitleCasePipe,
     NgForOf,
     NgIf,
-    FormsModule
+    FormsModule,
+    MatDialogModule
   ],
   templateUrl: './pedidos.component.html',
   styleUrls: ['./pedidos.component.css']
 })
 export class PedidosComponent implements OnInit {
-  displayedColumns: string[] = ['num_pedido','importe', 'impuestos', 'cantidad', 'fecha', 'cliente'];
+  displayedColumns: string[] = ['num_pedido', 'importe', 'impuestos', 'cantidad', 'fecha', 'cliente'];
   pedidos: Pedido[] = [];
   search = '';
   page = 1;
   pageSize = 3;
   totalItems = 0;
+  pedidoEnEdicion: Pedido | null = null;
+
+  // Inyectar MatDialog en el constructor
+  constructor(private dialog: MatDialog) {}
 
   async ngOnInit() {
     await this.loadPedidos();
@@ -64,8 +72,52 @@ export class PedidosComponent implements OnInit {
     return filtered;
   }
 
-  get allPedidos() {
-    return this.pedidos;
+  // Función para editar un pedido
+  async editarPedido(pedido: Pedido) {
+    this.pedidoEnEdicion = {...pedido};
+    // Aquí puedes implementar la lógica para mostrar un formulario de edición
+    // Por ejemplo, abrir un modal o navegar a otra página
+    console.log('Editando pedido:', pedido);
+  }
+
+  // Función para eliminar un pedido
+  async eliminarPedido(pedido: Pedido) {
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      width: '350px',
+      data: {
+        title: 'Eliminar pedido',
+        message: `¿Estás seguro de que deseas eliminar el pedido ${pedido.num_pedido}?`
+      }
+    });
+
+    // Modificado para usar firstValueFrom en lugar de toPromise (que está obsoleto)
+    try {
+      const result = await firstValueFrom(dialogRef.afterClosed());
+      if (result) {
+        if (pedido._id) {
+          await deletePedido(pedido._id);
+          await this.loadPedidos();
+        }
+      }
+    } catch (error) {
+      console.error('Error al eliminar el pedido:', error);
+    }
+  }
+
+  // Función para guardar los cambios de un pedido en edición
+  async guardarCambiosPedido() {
+    if (this.pedidoEnEdicion && this.pedidoEnEdicion._id) {
+      try {
+        // Omitir el _id al enviar los datos para editar
+        const {_id, ...datosParaEditar} = this.pedidoEnEdicion;
+        await editPedido(_id, datosParaEditar);
+        this.pedidoEnEdicion = null;
+        await this.loadPedidos(); // Recargar los pedidos después de editar
+        console.log('Pedido actualizado con éxito');
+      } catch (error) {
+        console.error('Error al actualizar el pedido:', error);
+      }
+    }
   }
 
   get totalPages() {
@@ -80,4 +132,3 @@ export class PedidosComponent implements OnInit {
     }
   }
 }
-

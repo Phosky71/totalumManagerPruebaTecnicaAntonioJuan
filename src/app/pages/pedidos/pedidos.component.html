@@ -23,6 +23,14 @@
         <td>{{ pedido.cantidad_productos }}</td>
         <td>{{ pedido.fecha_pedido }}</td>
         <td>{{ pedido.cliente_pedido }}</td>
+        <td>
+          <button class="btn btn-sm btn-primary me-1" (click)="editarPedido(pedido)">
+            <i class="fa fa-pencil"></i>
+          </button>
+          <button class="btn btn-sm btn-danger" (click)="eliminarPedido(pedido)">
+            <i class="fa fa-trash"></i>
+          </button>
+        </td>
       </tr>
       <tr *ngIf="filteredPedidos.length === 0">
         <td [attr.colspan]="displayedColumns.length" class="no-results">No hay resultados</td>
@@ -37,6 +45,6 @@
     <button (click)="setPage(page+1)" [disabled]="page === totalPages">&gt;</button>
   </div>
 </div>
-
 </body>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </html>

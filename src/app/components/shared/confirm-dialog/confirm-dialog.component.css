@@ -1,0 +1,40 @@
+/* Estilo para el contenedor del diálogo */
+.custom-dialog-container .mat-mdc-dialog-container {
+  padding: 24px;
+  border-radius: 8px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+}
+
+/* Estilo para el título */
+.custom-dialog-container h2 {
+  margin-top: 0;
+  color: #2c3e50;
+  font-size: 1.5rem;
+  font-weight: 500;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 12px;
+}
+
+/* Estilo para el contenido */
+.custom-dialog-container .mat-mdc-dialog-content {
+  color: #34495e;
+  font-size: 1rem;
+  padding: 16px 0;
+  margin-bottom: 16px;
+}
+
+/* Estilo para los botones */
+.custom-dialog-container .mat-mdc-dialog-actions {
+  padding: 8px 0;
+  margin-bottom: 0;
+}
+
+.custom-dialog-container button.mat-button {
+  color: #7f8c8d;
+  font-weight: 500;
+}
+
+.custom-dialog-container button.mat-raised-button.mat-warn {
+  background-color: #e74c3c;
+  color: white;
+}
